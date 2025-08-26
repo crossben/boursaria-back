@@ -13,10 +13,10 @@ class FavoritesController extends Controller
             'scholarship_id' => 'required|exists:scholarships,id',
         ]);
 
-        $userId = $request->user()->id;
+        $studentId = $request->user()->id;
 
         $favorite = Favorites::firstOrCreate([
-            'user_id' => $userId,
+            'student_id' => $studentId,
             'scholarship_id' => $validatedData['scholarship_id'],
         ]);
 
@@ -31,12 +31,12 @@ class FavoritesController extends Controller
     public function removeFavorite(Request $request)
     {
         $validatedData = $request->validate([
-            'user_id' => 'required|exists:users,id',
+            'student_id' => 'required|exists:students,id',
             'scholarship_id' => 'required|exists:scholarships,id',
         ]);
 
         $favorite = Favorites::where([
-            'user_id' => $validatedData['user_id'],
+            'student_id' => $validatedData['student_id'],
             'scholarship_id' => $validatedData['scholarship_id'],
         ])->first();
 
@@ -57,10 +57,12 @@ class FavoritesController extends Controller
     public function getFavoriteByStudentId(Request $request)
     {
         $validatedData = $request->validate([
-            'user_id' => 'required|exists:users,id',
+            'student_id' => 'required|exists:students,id',
         ]);
 
-        $favorites = Favorites::where('user_id', $validatedData['user_id'])->get();
+        $favorites = Favorites::with(['student', 'scholarship'])
+            ->where('student_id', $validatedData['student_id'])
+            ->get();
 
         return response()->json([
             'status' => 'success',

@@ -10,12 +10,12 @@ class ApplicationsController extends Controller
     public function apply(Request $request)
     {
         $validatedData = $request->validate([
-            'user_id' => 'required|exists:users,id',
+            'student_id' => 'required|exists:students,id',
             'scholarship_id' => 'required|exists:scholarships,id',
         ]);
 
         // Prevent duplicate applications
-        $exists = Applications::where('user_id', $validatedData['user_id'])
+        $exists = Applications::where('student_id', $validatedData['student_id'])
             ->where('scholarship_id', $validatedData['scholarship_id'])
             ->exists();
 
@@ -37,14 +37,31 @@ class ApplicationsController extends Controller
 
     public function getApplicationsByStudentId(Request $request)
     {
+        // Validate the student_id in the query string
         $request->validate([
-            'user_id' => 'required|exists:users,id',
+            'student_id' => 'required|exists:students,id',
         ]);
 
-        $userId = $request->query('user_id');
+        // Get student_id from the query
+        $studentId = $request->query('student_id');
 
-        $applications = Applications::with('scholarship')
-            ->where('user_id', $userId)
+        // Retrieve applications with related student and scholarship data
+        $applications = Applications::with(['student', 'scholarship'])
+            ->where('student_id', $studentId)
+            ->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $applications,
+        ]);
+    }
+
+    public function getMyApplications(Request $request)
+    {
+        $studentId = $request->user()->id;
+
+        $applications = Applications::with(['scholarship', 'student'])
+            ->where('student_id', $studentId)
             ->get();
 
         return response()->json([

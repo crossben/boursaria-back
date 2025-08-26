@@ -64,9 +64,9 @@ class ScholarshipController extends Controller
         ], 200);
     }
 
-    public function getScholarshipById($id)
+    public function getScholarshipById(Request $request)
     {
-        $scholarship = Scholarship::find($id);
+        $scholarship = Scholarship::find($request->id);
 
         if (!$scholarship) {
             return response()->json([

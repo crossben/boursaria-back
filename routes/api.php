@@ -27,13 +27,14 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Applications routes
     Route::post('/apply', [ApplicationsController::class, 'apply']);
-    Route::get('/applications', [ApplicationsController::class, 'getApplicationsByStudentId']);
+    Route::get('/applications/{id}', [ApplicationsController::class, 'getApplicationsByStudentId']);
+    Route::get('/my-applications', [ApplicationsController::class, 'getMyApplications']);
 
     // Scholarship routes 
     Route::post('/scholarships', [ScholarshipController::class, 'createScholarShip']);
 
     // Favorites routes
     Route::post('/favorites', [FavoritesController::class, 'addFavorite']);
-    Route::delete('/favorites', [FavoritesController::class, 'removeFavorite']);
-    Route::get('/favorites', [FavoritesController::class, 'getFavoriteByStudentId']);
+    Route::delete('/favorites/{id}', [FavoritesController::class, 'removeFavorite']);
+    Route::get('/favorites/{id}', [FavoritesController::class, 'getFavoriteByStudentId']);
 });
