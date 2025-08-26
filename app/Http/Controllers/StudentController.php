@@ -21,19 +21,20 @@ class StudentController extends Controller
             'currentLevel' => 'nullable|string|max:255',
             'fieldOfStudy' => 'nullable|string|max:255',
             'role' => 'required|in:student,admin',
-            'password' => 'required|string|min:8|confirmed',
+            'password' => 'required|string|min:8|confirmed', // requires 'password_confirmation' field
         ]);
 
-        // Hash the password before saving
-        $validatedData['password'] = Hash::make($validatedData['password']);
-
-        // Create the student
+        // Create student
         $student = Student::create($validatedData);
 
+        // Generate token
+        $token = $student->createToken('student-api-token')->plainTextToken;
+
+        // Return response
         return response()->json([
-            'message' => 'registered_successfully.',
+            'message' => 'Registered successfully.',
             'student' => $student,
-            'token' => $student->createToken('student-api-token')->plainTextToken
+            'token' => $token
         ], 201);
     }
 
@@ -73,7 +74,7 @@ class StudentController extends Controller
 
     public function getStudentById(Request $request)
     {
-        $student = Student::with(['favorietes', 'applications'])->find($request->id);
+        $student = Student::with(['favorites', 'applications'])->find($request->id);
 
         if (!$student) {
             return response()->json([

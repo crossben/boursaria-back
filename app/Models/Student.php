@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
 
-class Student extends  Authenticatable
+
+class Student extends Authenticatable
 {
     use HasApiTokens;
     protected $fillable = [
-        'id',
         'email',
         'firstName',
         'lastName',
@@ -25,6 +25,7 @@ class Student extends  Authenticatable
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'dateOfBirth' => 'date', // Add this
     ];
 
     protected $dates = [

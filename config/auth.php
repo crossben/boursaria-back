@@ -41,7 +41,7 @@ return [
             'provider' => 'users',
         ],
         'students' => [
-            'driver' => 'session',
+            'driver' => 'sanctum',
             'provider' => 'students',
         ],
     ],
@@ -70,7 +70,7 @@ return [
         ],
         'students' => [
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\Student::class),
+            'model' => App\Models\Student::class,
         ],
 
         // 'users' => [
@@ -107,7 +107,7 @@ return [
         ],
         'students' => [
             'provider' => 'students',
-            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
+            'table' => 'student_password_reset_tokens',
             'expire' => 60,
             'throttle' => 60,
         ],
