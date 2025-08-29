@@ -12,6 +12,15 @@ class ApplicationsController extends Controller
         $validatedData = $request->validate([
             'student_id' => 'required|exists:students,id',
             'scholarship_id' => 'required|exists:scholarships,id',
+            'nom' => 'required|string|max:255',
+            'prenom' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'age' => 'required|integer|min:0',
+            'anneeDernierDiplome' => 'required|string|max:4',
+            'dernierDiplome' => 'required|string|max:255',
+            'ecole' => 'required|string|max:255',
+            'programmeInteresse' => 'required|string|max:255',
+            'motivation' => 'required|string',
         ]);
 
         // Prevent duplicate applications

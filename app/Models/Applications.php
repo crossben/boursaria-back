@@ -15,6 +15,16 @@ class Applications extends Model
         'student_id',
         'scholarship_id',
         'status',
+        "nom",
+        "prenom",
+        "email",
+        "age",
+        "anneeDernierDiplome",
+        "dernierDiplome",
+        "ecole",
+        "programmeInteresse",
+        "motivation",
+
     ];
 
     protected $casts = [
